@@ -1,4 +1,5 @@
 """Câmera com detecção de movimento (OpenCV). Roda no thread principal."""
+import sys
 import time
 from pathlib import Path
 
@@ -25,7 +26,9 @@ class DetectorMovimento:
         if self.ativa:
             self.falar("A câmera já está ativa.")
             return
-        cap = cv2.VideoCapture(self.indice)
+        # No Windows, o backend DirectShow abre a câmera bem mais rápido que o padrão (MSMF)
+        backend = cv2.CAP_DSHOW if sys.platform.startswith("win") else cv2.CAP_ANY
+        cap = cv2.VideoCapture(self.indice, backend)
         if not cap.isOpened():
             self.falar("Não consegui acessar a câmera.")
             return

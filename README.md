@@ -3,14 +3,20 @@
 Comandos de voz em português para abrir o navegador/apps/sites e ativar a câmera
 para detectar movimentos (caixas verdes + fotos salvas em `capturas/`).
 
-## Instalação
-```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+## Instalação (Windows)
+Recomendado **Python 3.11 ou 3.12** (o PyAudio ainda pode não ter pacote pronto para versões mais novas).
+Dê dois cliques em `iniciar.bat` (cria o ambiente, instala tudo e roda) ou, no PowerShell:
+```powershell
+py -3.12 -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 python main.py
 ```
-- **PyAudio** precisa de PortAudio: Linux `sudo apt install portaudio19-dev`, macOS `brew install portaudio`.
+- Se `pip install PyAudio` falhar: `pip install pipwin` e depois `pipwin install pyaudio`, ou use Python 3.12.
+- Permita o acesso ao microfone e à câmera em *Configurações > Privacidade e segurança*.
+- A voz falada usa o SAPI5 do Windows; para voz em português instale o idioma em *Configurações > Hora e idioma > Voz*.
 - O reconhecimento usa o serviço gratuito do Google (precisa de internet).
+- Linux/macOS também funcionam (PyAudio precisa do PortAudio).
 
 ## Comandos (diga "Jarvis, ...")
 | Fala | Ação |

@@ -1,5 +1,4 @@
 """Interpretação de frases e ações do sistema (abrir apps, sites, pesquisas)."""
-import os
 import re
 import subprocess
 import sys
@@ -27,8 +26,8 @@ SITES = {
 APPS = {
     "calculadora": {"win32": "calc", "darwin": "open -a Calculator", "linux": "gnome-calculator"},
     "bloco de notas": {"win32": "notepad", "darwin": "open -a TextEdit", "linux": "gedit"},
-    "terminal": {"win32": "cmd", "darwin": "open -a Terminal", "linux": "x-terminal-emulator"},
-    "explorador": {"win32": "explorer", "darwin": "open .", "linux": "xdg-open ."},
+    "terminal": {"win32": "start cmd", "darwin": "open -a Terminal", "linux": "x-terminal-emulator"},
+    "explorador": {"win32": "start explorer", "darwin": "open .", "linux": "xdg-open ."},
 }
 
 
@@ -42,7 +41,7 @@ def abrir_app(nome: str) -> bool:
         return False
     try:
         if _plataforma() == "win32":
-            os.startfile(cmd) if cmd == "explorer" else subprocess.Popen(cmd, shell=True)
+            subprocess.Popen(cmd, shell=True)  # calc, notepad, "start cmd"...
         else:
             subprocess.Popen(cmd.split(), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         return True

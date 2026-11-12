@@ -1,5 +1,6 @@
 """Jarvis: assistente de voz. Execute: python main.py"""
 import queue
+import sys
 import threading
 
 import speech_recognition as sr
@@ -9,6 +10,9 @@ from jarvis.movimento import DetectorMovimento
 
 IDIOMA = "pt-BR"
 PALAVRA_DE_ATIVACAO = "jarvis"  # fale "Jarvis, abrir navegador". Use "" para aceitar qualquer frase.
+
+if hasattr(sys.stdout, "reconfigure"):  # acentos corretos no terminal do Windows
+    sys.stdout.reconfigure(encoding="utf-8")
 
 _fala_lock = threading.Lock()
 
