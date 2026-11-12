@@ -56,4 +56,13 @@ Sensibilidade da câmera: `area_minima` em `jarvis/movimento.py`.
 
 Na primeira vez que usar a contagem, o Jarvis baixa os modelos de IA do MediaPipe (poucos MB) para a pasta `modelos/` — precisa de internet só nessa vez.
 
+## Voz do Jarvis (respostas faladas)
+Ele fala todas as respostas e já avisa "Jarvis pronto" ao iniciar. Para testar só a voz:
+```powershell
+python -m jarvis.voz
+```
+Isso lista as vozes instaladas e fala uma frase. Se a voz sair em inglês, instale o português:
+*Configurações > Hora e idioma > Idioma e região > Adicionar idioma > Português (Brasil) > Opções > Fala*.
+Enquanto fala, o microfone é ignorado (para ele não se ouvir). Velocidade: `taxa` em `jarvis/voz.py`.
+
 Teste do interpretador sem hardware: `python tests_comandos.py`.

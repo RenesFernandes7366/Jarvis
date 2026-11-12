@@ -2,11 +2,13 @@
 import queue
 import sys
 import threading
+import time
 
 import speech_recognition as sr
 
 from jarvis.comandos import Interpretador, normalizar
 from jarvis.camera import Camera
+from jarvis.voz import Voz
 
 IDIOMA = "pt-BR"
 PALAVRA_DE_ATIVACAO = "jarvis"  # fale "Jarvis, abrir navegador". Use "" para aceitar qualquer frase.
@@ -14,20 +16,9 @@ PALAVRA_DE_ATIVACAO = "jarvis"  # fale "Jarvis, abrir navegador". Use "" para ac
 if hasattr(sys.stdout, "reconfigure"):  # acentos corretos no terminal do Windows
     sys.stdout.reconfigure(encoding="utf-8")
 
-_fala_lock = threading.Lock()
-
-
-def falar(texto: str) -> None:
-    print(f"[Jarvis] {texto}")
-    try:
-        import pyttsx3
-
-        with _fala_lock:
-            motor = pyttsx3.init()
-            motor.say(texto)
-            motor.runAndWait()
-    except Exception:
-        pass  # sem TTS disponível: apenas imprime
+voz = Voz()
+falar = voz.falar
+pronto = threading.Event()  # o microfone terminou de calibrar
 
 
 def escutar(fila: queue.Queue, parar: threading.Event) -> None:
@@ -35,9 +26,16 @@ def escutar(fila: queue.Queue, parar: threading.Event) -> None:
     with sr.Microphone() as mic:
         rec.adjust_for_ambient_noise(mic, duration=1)
         print("Pronto! Diga: 'Jarvis, abrir navegador' ou 'Jarvis, ativar câmera'.")
+        pronto.set()
         while not parar.is_set():
+            if voz.falando.is_set():  # não escuta enquanto o Jarvis fala
+                time.sleep(0.1)
+                continue
+            inicio = time.time()
             try:
                 audio = rec.listen(mic, timeout=3, phrase_time_limit=8)
+                if voz.falando.is_set() or voz.fim > inicio:
+                    continue  # a gravação pegou a própria voz do Jarvis
                 texto = rec.recognize_google(audio, language=IDIOMA)
             except (sr.WaitTimeoutError, sr.UnknownValueError):
                 continue
@@ -55,8 +53,12 @@ def main() -> None:
     interp = Interpretador(falar, camera)
     threading.Thread(target=escutar, args=(fila, parar), daemon=True).start()
 
+    saudou = False
     try:
         while not interp.sair:
+            if pronto.is_set() and not saudou:  # a voz sempre é usada no thread principal
+                saudou = True
+                falar("Jarvis pronto. Pode falar.")
             try:
                 # com a câmera ativa não bloqueia, para manter o vídeo fluindo
                 texto = fila.get(timeout=0.001 if camera.ativa else 0.2)
