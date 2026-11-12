@@ -21,15 +21,32 @@ python main.py
 ## Comandos (diga "Jarvis, ...")
 | Fala | Ação |
 |---|---|
-| abrir navegador / abrir youtube / abrir gmail | abre no navegador |
+| abrir navegador / youtube / gmail / spotify / discord / word / excel / calculadora / vs code | abre o programa ou site |
+| abrir pasta downloads / documentos / imagens | abre a pasta |
+| fechar spotify / fechar chrome / fechar word | fecha o programa (ele ainda pergunta se quer salvar) |
 | pesquisar gatos fofos | busca no Google |
-| abrir calculadora / bloco de notas / terminal | abre o app |
+| pesquisar música relaxante no youtube | busca no YouTube |
+| aumentar volume / diminuir volume / silenciar | controla o som |
+| pausar música / continuar / próxima música / música anterior | controla a mídia |
+| minimizar tudo / tirar print | mostra a área de trabalho / captura a tela |
+| bloquear computador | bloqueia o Windows |
+| desligar computador / reiniciar computador | agenda para 30 s; **cancelar desligamento** desfaz |
 | **ativar câmera** / iniciar detecção de movimento | liga a câmera e detecta movimento |
 | **parar câmera** (ou tecla `q` na janela) | desliga a câmera |
 | que horas são / ajuda | informações |
 | sair / tchau | encerra |
 
+## Adicionar seus próprios programas
+Edite `comandos.json` (bloco de notas) — não precisa mexer em código:
+```json
+"apps":  { "obs": {"abrir": "C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe", "processo": ["obs64.exe"]} },
+"sites": { "instagram": "https://www.instagram.com" },
+"pastas": { "projetos": "C:\\Users\\Voce\\Projetos" }
+```
+Depois diga "Jarvis, abrir obs". O campo `abrir` aceita nome do programa, caminho completo, URL ou protocolo (`spotify:`).
+`processo` é o nome do `.exe` no Gerenciador de Tarefas e só é necessário para o "fechar".
+
 Para aceitar frases sem "Jarvis", ponha `PALAVRA_DE_ATIVACAO = ""` em `main.py`.
-Novos comandos: edite `jarvis/comandos.py`. Sensibilidade: `area_minima` em `jarvis/movimento.py`.
+Sensibilidade da câmera: `area_minima` em `jarvis/movimento.py`.
 
 Teste do interpretador sem hardware: `python tests_comandos.py`.

@@ -1,0 +1,39 @@
+{
+  "apps": {
+    "chrome":            {"abrir": "chrome",   "processo": ["chrome.exe"]},
+    "edge":              {"abrir": "msedge",   "processo": ["msedge.exe"]},
+    "firefox":           {"abrir": "firefox",  "processo": ["firefox.exe"]},
+    "spotify":           {"abrir": "spotify:", "processo": ["Spotify.exe"]},
+    "discord":           {"abrir": "discord:", "processo": ["Discord.exe"]},
+    "whatsapp":          {"abrir": "whatsapp:", "processo": ["WhatsApp.exe"]},
+    "word":              {"abrir": "winword",  "processo": ["WINWORD.EXE"]},
+    "excel":             {"abrir": "excel",    "processo": ["EXCEL.EXE"]},
+    "powerpoint":        {"abrir": "powerpnt", "processo": ["POWERPNT.EXE"]},
+    "vs code":           {"abrir": "code",     "processo": ["Code.exe"]},
+    "calculadora":       {"abrir": "calc",     "processo": ["CalculatorApp.exe", "calc.exe"]},
+    "bloco de notas":    {"abrir": "notepad",  "processo": ["notepad.exe"]},
+    "paint":             {"abrir": "mspaint",  "processo": ["mspaint.exe"]},
+    "terminal":          {"abrir": "cmd",      "processo": []},
+    "explorador":        {"abrir": "explorer", "processo": []},
+    "configuracoes":     {"abrir": "ms-settings:", "processo": []},
+    "gerenciador de tarefas": {"abrir": "taskmgr", "processo": []},
+    "navegador":         {"abrir": "https://www.google.com", "processo": ["chrome.exe", "msedge.exe", "firefox.exe"]}
+  },
+  "sites": {
+    "youtube":  "https://www.youtube.com",
+    "gmail":    "https://mail.google.com",
+    "github":   "https://github.com",
+    "google":   "https://www.google.com",
+    "netflix":  "https://www.netflix.com",
+    "chatgpt":  "https://chatgpt.com",
+    "maps":     "https://maps.google.com"
+  },
+  "pastas": {
+    "downloads":      "%USERPROFILE%\\Downloads",
+    "documentos":     "%USERPROFILE%\\Documents",
+    "imagens":        "%USERPROFILE%\\Pictures",
+    "area de trabalho": "%USERPROFILE%\\Desktop",
+    "musicas":        "%USERPROFILE%\\Music",
+    "videos":         "%USERPROFILE%\\Videos"
+  }
+}
