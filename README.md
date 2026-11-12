@@ -32,6 +32,11 @@ python main.py
 | bloquear computador | bloqueia o Windows |
 | desligar computador / reiniciar computador | agenda para 30 s; **cancelar desligamento** desfaz |
 | **ativar câmera** / iniciar detecção de movimento | liga a câmera e detecta movimento |
+| **contar dedos** | liga a câmera e conta os dedos que você mostra (até 2 mãos) |
+| **quantos dedos estou mostrando** | responde por voz o que está vendo |
+| **contar rostos** / **contar pessoas** / **contar objetos** | conta rostos, pessoas ou objetos (copo, celular, livro...) |
+| **quantas pessoas** / **quantos objetos você vê** | responde por voz |
+| ativar câmera (de novo) | volta para o modo movimento |
 | **parar câmera** (ou tecla `q` na janela) | desliga a câmera |
 | que horas são / ajuda | informações |
 | sair / tchau | encerra |
@@ -48,5 +53,7 @@ Depois diga "Jarvis, abrir obs". O campo `abrir` aceita nome do programa, caminh
 
 Para aceitar frases sem "Jarvis", ponha `PALAVRA_DE_ATIVACAO = ""` em `main.py`.
 Sensibilidade da câmera: `area_minima` em `jarvis/movimento.py`.
+
+Na primeira vez que usar a contagem, o Jarvis baixa os modelos de IA do MediaPipe (poucos MB) para a pasta `modelos/` — precisa de internet só nessa vez.
 
 Teste do interpretador sem hardware: `python tests_comandos.py`.

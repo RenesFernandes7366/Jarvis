@@ -5,13 +5,17 @@ from jarvis.comandos import Interpretador
 
 
 class CamFalsa:
-    def __init__(self): self.log = []
-    def iniciar(self): self.log.append("iniciar")
+    def __init__(self, modo=None):
+        self.log, self.modo = [], modo
+    @property
+    def ativa(self): return self.modo is not None
+    def iniciar(self, modo="movimento"): self.log.append(("iniciar", modo)); self.modo = modo
     def parar(self): self.log.append("parar")
+    def responder(self, filtro=None): self.log.append(("responder", filtro))
 
 
-def rodar(frase):
-    falas, cam, ev = [], CamFalsa(), []
+def rodar(frase, modo=None):
+    falas, cam, ev = [], CamFalsa(modo), []
     with patch("webbrowser.open", lambda u: ev.append(("web", u))), \
          patch("jarvis.sistema.abrir", lambda a: ev.append(("abrir", a)) or True), \
          patch("jarvis.sistema.fechar", lambda p: ev.append(("fechar", tuple(p))) or True), \
@@ -41,9 +45,17 @@ assert rodar("tirar print")[2] == [("teclas", ("win", "printscreen"))]
 assert rodar("bloquear computador")[2] == [("bloquear",)]
 assert rodar("desligar computador")[2] == [("desligar", False)]
 assert rodar("cancelar desligamento")[2] == [("cancelar",)]
-assert rodar("ativar câmera")[1] == ["iniciar"]
+assert rodar("ativar câmera")[1] == [("iniciar", "movimento")]
 assert rodar("parar câmera")[1] == ["parar"]
 assert rodar("encerrar câmera") [1] == ["parar"] and not rodar("encerrar câmera")[3]
+assert rodar("contar dedos")[1] == [("iniciar", "dedos")]
+assert rodar("quantos dedos estou mostrando", "dedos")[1] == [("responder", None)]
+assert rodar("quantos dedos estou mostrando")[1] == [("iniciar", "dedos")]
+assert rodar("contar rostos")[1] == [("iniciar", "rostos")]
+assert rodar("quantas pessoas tem aqui", "objetos")[1] == [("responder", "pessoa")]
+assert rodar("contar objetos")[1] == [("iniciar", "objetos")]
+assert rodar("quantos objetos você vê", "objetos")[1] == [("responder", None)]
+assert rodar("que horas são")[1] == []
 assert rodar("tchau")[3] is True
 assert "Não entendi" in rodar("blablabla")[0][0]
 assert "comandos.json" in rodar("abrir coisa inexistente")[0][0]

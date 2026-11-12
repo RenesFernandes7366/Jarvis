@@ -6,7 +6,7 @@ import threading
 import speech_recognition as sr
 
 from jarvis.comandos import Interpretador, normalizar
-from jarvis.movimento import DetectorMovimento
+from jarvis.camera import Camera
 
 IDIOMA = "pt-BR"
 PALAVRA_DE_ATIVACAO = "jarvis"  # fale "Jarvis, abrir navegador". Use "" para aceitar qualquer frase.
@@ -51,7 +51,7 @@ def escutar(fila: queue.Queue, parar: threading.Event) -> None:
 def main() -> None:
     fila: queue.Queue = queue.Queue()
     parar = threading.Event()
-    camera = DetectorMovimento(falar)
+    camera = Camera(falar)
     interp = Interpretador(falar, camera)
     threading.Thread(target=escutar, args=(fila, parar), daemon=True).start()
 

@@ -9,7 +9,7 @@ if not exist ".venv\Scripts\python.exe" (
 )
 call ".venv\Scripts\activate.bat"
 
-python -c "import speech_recognition, pyaudio, pyttsx3, cv2" >nul 2>&1
+python -c "import speech_recognition, pyaudio, pyttsx3, cv2, mediapipe" >nul 2>&1
 if errorlevel 1 (
     echo Instalando dependencias, aguarde alguns minutos...
     python -m pip install --upgrade pip

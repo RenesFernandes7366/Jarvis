@@ -66,8 +66,20 @@ class Interpretador:
             return
         busca = re.search(r"(?:pesquisar|pesquise|buscar|busque|procurar) (?:por |sobre )?(.+)", t)
 
+        # contagem pela câmera: "contar dedos", "quantos dedos estou mostrando", "quantas pessoas"
+        alvo = re.search(r"\b(dedos?|rostos?|caras?|faces?|pessoas?|objetos?|coisas)\b", t)
+        if alvo and re.search(r"\b(contar|conte|contagem|quantos|quantas)\b", t):
+            palavra = alvo.group(1)
+            modo = "dedos" if palavra.startswith("dedo") else "rostos" if palavra[:3] in ("ros", "car", "fac") else "objetos"
+            filtro = "pessoa" if palavra.startswith("pessoa") else None
+            if re.search(r"\b(quantos|quantas)\b", t) and self.camera.ativa and self.camera.modo == modo:
+                self.camera.responder(filtro)  # já está contando: só responde
+            else:
+                self.camera.iniciar(modo)
+                if re.search(r"\b(quantos|quantas)\b", t):
+                    self.falar("Pergunte de novo em alguns segundos.")
         # câmera (antes de "sair"/"fechar" para "encerrar câmera" não fechar o Jarvis)
-        if re.search(r"(parar|desativar|desligar|encerrar|fechar) (a )?(camera|deteccao|monitoramento)", t):
+        elif re.search(r"(parar|desativar|desligar|encerrar|fechar) (a )?(camera|deteccao|monitoramento)", t):
             self.camera.parar()
         elif re.search(r"(ativar|ligar|iniciar|abrir|comecar) (a )?(camera|deteccao|monitoramento|captura)", t) or (
             "camera" in t and "movimento" in t
@@ -131,7 +143,8 @@ class Interpretador:
         elif "ajuda" in t or "comandos" in t:
             self.falar(
                 "Posso abrir e fechar programas, sites e pastas, pesquisar, controlar volume e música, "
-                "tirar print, bloquear o computador e ativar a câmera para detectar movimento."
+                "tirar print, bloquear o computador, detectar movimento pela câmera e contar dedos, "
+                "rostos, pessoas e objetos."
             )
         else:
             self.falar("Não entendi o comando.")
